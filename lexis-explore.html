@@ -13,6 +13,8 @@
     --teal-bg:rgba(16,169,174,.12); --teal-text:#0C898D;
     --gold-bg:rgba(255,202,5,.16); --gold-text:#8A6A00;
     --orange-bg:rgba(245,145,32,.12);
+    --purple:#6B4FBB; --purple-bg:rgba(107,79,187,.10);
+    --maroon:#B23A1D; --maroon-bg:rgba(178,58,29,.10);
     --line:#E7E7E9; --grey:#6B6763;
     --font-body:'Inter',system-ui,-apple-system,sans-serif;
     --font-head:'Poppins',var(--font-body);
@@ -70,26 +72,25 @@
   .campusPill .dot{width:9px;height:9px;border-radius:50%;}
   .campusPill:hover{border-color:var(--orange);color:var(--orange);}
 
-  /* ---------- Blog-style activity grid ---------- */
-  .blogGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;}
-  .blogCard{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
-  .blogCard-img{aspect-ratio:16/10;overflow:hidden;background:var(--body-bg);}
-  .blogCard-img img{width:100%;height:100%;object-fit:cover;}
-  .blogCard-body{padding:16px 18px 20px;}
-  .blogTag{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;background:var(--orange-bg);color:var(--orange);padding:4px 10px;border-radius:999px;margin-bottom:10px;}
-  .blogCard h3{font-size:16.5px;line-height:1.3;margin-bottom:8px;}
-  .blogCard p{font-size:13.5px;color:var(--grey);line-height:1.55;margin:0;}
-
-  /* ---------- Clubs section ---------- */
-  .clubsWrap{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px;}
+  /* ---------- Regular academic activities: bordered highlight cards ---------- */
   .clubsWrap p.lead{font-size:15px;color:var(--grey);line-height:1.7;max-width:760px;margin:0 0 24px;}
-  .clubGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
-  .clubCard{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--body-bg);}
-  .clubCard .clubIcon{font-size:20px;margin-bottom:8px;display:block;}
-  .clubCard h4{font-family:var(--font-head);font-weight:700;font-size:14.5px;margin:0 0 6px;}
-  .clubCard p{font-size:13px;color:var(--grey);line-height:1.5;margin:0;}
-  .clubCard.alt{background:var(--teal-bg);}
-  .clubCard.gold{background:var(--gold-bg);}
+  .actGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;}
+  .actCard{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent,var(--orange));border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;}
+  .actCard .actIcon{font-size:26px;margin-bottom:14px;}
+  .actEyebrow{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--grey);margin-bottom:8px;}
+  .actBadge{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--accent-bg,var(--orange-bg));color:var(--accent,var(--orange));margin-bottom:12px;width:fit-content;}
+  .actCard h4{font-size:16.5px;line-height:1.25;margin:0 0 8px;}
+  .actCard p{font-size:13px;color:var(--grey);line-height:1.55;margin:0;flex:1;}
+
+  /* ---------- Explore activities: image highlight cards ---------- */
+  .exploreGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+  .exploreCard{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent,var(--orange));border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+  .exploreCard-img{aspect-ratio:16/10;overflow:hidden;background:var(--body-bg);}
+  .exploreCard-img img{width:100%;height:100%;object-fit:cover;}
+  .exploreCard-body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1;}
+  .exploreCard h4{font-size:16.5px;line-height:1.25;margin:0 0 8px;}
+  .exploreCard p{font-size:13px;color:var(--grey);line-height:1.55;margin:0 0 14px;flex:1;}
+  .exploreLink{font-size:12.5px;font-weight:800;color:var(--accent,var(--orange));}
 
   /* ---------- Calendar embed wrapper ---------- */
   .embedWrap{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 6px 30px rgba(36,31,28,.06);}
@@ -161,7 +162,7 @@
   </div>
 </div>
 
-<div class="section tight" style="padding-top:0;">
+<div class="section tight" style="padding-top:0;" id="activityCalendarSection">
   <div class="sectionHead">
     <h2>The full activity calendar</h2>
     <p>All six campuses, Sep 2026 – Apr 2027. Use the campus filter inside the tool to narrow it down.</p>
@@ -173,69 +174,93 @@
 
 <div class="section" style="padding-top:0;">
   <div class="sectionHead">
-    <h2>Regular activities &amp; clubs</h2>
-    <p>Alongside the one-off sessions and trips in the calendar above, every campus runs a steady lineup of weekly clubs — free, drop-in, and open to every level.</p>
+    <h2>Regular academic activities</h2>
+    <p>Free, drop-in support that runs every week at every campus — no booking, no pressure, just turn up.</p>
   </div>
   <div class="clubsWrap">
-    <p class="lead">These are the sessions that run week in, week out, rain or shine. They're informal and no-pressure — a relaxed space to practise speaking, get extra academic support, or just unwind with other students between classes. Most run for 45–60 minutes and don't need any booking — just turn up.</p>
-    <div class="clubGrid">
-      <div class="clubCard">
-        <span class="clubIcon">💬</span>
+    <p class="lead">Alongside the one-off sessions and trips in the calendar above, these are the sessions that run week in, week out, rain or shine — a relaxed space to practise speaking, get extra academic support, or just unwind between classes. Most run for 45–60 minutes.</p>
+    <div class="actGrid">
+      <div class="actCard" style="--accent:var(--orange);--accent-bg:var(--orange-bg);">
+        <span class="actIcon">💬</span>
+        <div class="actEyebrow">Weekly club</div>
+        <span class="actBadge">45 min</span>
         <h4>Conversation Club</h4>
         <p>Small-group chats with no set topic and no pressure to be perfect — just relaxed, everyday English practice with other students and a teacher floating between groups to help.</p>
       </div>
-      <div class="clubCard">
-        <span class="clubIcon">🚶</span>
+      <div class="actCard" style="--accent:var(--gold-text);--accent-bg:var(--gold-bg);">
+        <span class="actIcon">🚶</span>
+        <div class="actEyebrow">Weekly club</div>
+        <span class="actBadge">45 min</span>
         <h4>Walk &amp; Talk</h4>
         <p>A guided walk around the local area while you practise speaking naturally on the move. Fresh air, easy conversation, and a good way to get to know your new home.</p>
       </div>
-      <div class="clubCard">
-        <span class="clubIcon">☕</span>
+      <div class="actCard" style="--accent:var(--teal-text);--accent-bg:var(--teal-bg);">
+        <span class="actIcon">☕</span>
+        <div class="actEyebrow">Weekly club</div>
+        <span class="actBadge">45 min</span>
         <h4>Coffee &amp; Conversation</h4>
         <p>Grab a coffee and settle in for some unstructured chat with classmates from other classes and levels — a favourite for students who just want low-key speaking practice.</p>
       </div>
-      <div class="clubCard">
-        <span class="clubIcon">📄</span>
+      <div class="actCard" style="--accent:var(--purple);--accent-bg:var(--purple-bg);">
+        <span class="actIcon">📄</span>
+        <div class="actEyebrow">Career support</div>
+        <span class="actBadge">60 min</span>
         <h4>Job Club &amp; Resume Workshop</h4>
         <p>Hands-on help polishing your resume and cover letter, practising interview answers, and understanding how job hunting actually works in Australia.</p>
       </div>
-      <div class="clubCard">
-        <span class="clubIcon">✏️</span>
+      <div class="actCard" style="--accent:var(--maroon);--accent-bg:var(--maroon-bg);">
+        <span class="actIcon">✏️</span>
+        <div class="actEyebrow">Weekly club</div>
+        <span class="actBadge">45 min</span>
         <h4>Grammar Club</h4>
         <p>Extra, no-pressure grammar practice outside of class time. Bring specific questions you're stuck on, or just come along to review the basics with a teacher on hand.</p>
       </div>
-      <div class="clubCard">
-        <span class="clubIcon">📚</span>
+      <div class="actCard" style="--accent:var(--orange);--accent-bg:var(--orange-bg);">
+        <span class="actIcon">📚</span>
+        <div class="actEyebrow">Drop-in support</div>
+        <span class="actBadge">60 min</span>
         <h4>Homework Help</h4>
         <p>A supervised drop-in session where you can bring any homework or coursework questions and get one-on-one support without waiting for your next class.</p>
       </div>
-      <div class="clubCard">
-        <span class="clubIcon">🎧</span>
+      <div class="actCard" style="--accent:var(--gold-text);--accent-bg:var(--gold-bg);">
+        <span class="actIcon">🎧</span>
+        <div class="actEyebrow">Weekly club</div>
+        <span class="actBadge">45 min</span>
         <h4>Listening Club</h4>
         <p>Sharpen your listening with real podcasts, songs and video clips, followed by group discussion — great for tuning your ear to different accents and speeds.</p>
       </div>
-      <div class="clubCard">
-        <span class="clubIcon">🗣️</span>
+      <div class="actCard" style="--accent:var(--teal-text);--accent-bg:var(--teal-bg);">
+        <span class="actIcon">🗣️</span>
+        <div class="actEyebrow">Weekly workshop</div>
+        <span class="actBadge">45 min</span>
         <h4>Pronunciation Workshop</h4>
         <p>Focused, practical practice on sounds, word stress and intonation, aimed at helping you speak more clearly and be understood more easily.</p>
       </div>
-      <div class="clubCard">
-        <span class="clubIcon">🎤</span>
+      <div class="actCard" style="--accent:var(--purple);--accent-bg:var(--purple-bg);">
+        <span class="actIcon">🎤</span>
+        <div class="actEyebrow">Weekly club</div>
+        <span class="actBadge">45 min</span>
         <h4>Speaking Club</h4>
         <p>A dedicated space to practise speaking up in front of others — short presentations, debates or group discussion — in a supportive, low-stakes setting.</p>
       </div>
-      <div class="clubCard alt">
-        <span class="clubIcon">🧘</span>
+      <div class="actCard" style="--accent:var(--maroon);--accent-bg:var(--maroon-bg);">
+        <span class="actIcon">🧘</span>
+        <div class="actEyebrow">Wellness</div>
+        <span class="actBadge">Weekly</span>
         <h4>Yoga &amp; Pilates</h4>
         <p>A relaxed session focused on movement, breathing and a bit of headspace — a nice counterbalance to study (and to some of the calendar's more energetic activities).</p>
       </div>
-      <div class="clubCard alt">
-        <span class="clubIcon">🎲</span>
+      <div class="actCard" style="--accent:var(--orange);--accent-bg:var(--orange-bg);">
+        <span class="actIcon">🎲</span>
+        <div class="actEyebrow">Social</div>
+        <span class="actBadge">Drop-in</span>
         <h4>Games &amp; Social Lounge</h4>
         <p>A laid-back afternoon in the student lounge with games and easy conversation. No pressure, no plans — just a good way to unwind and get to know your classmates.</p>
       </div>
-      <div class="clubCard alt">
-        <span class="clubIcon">🃏</span>
+      <div class="actCard" style="--accent:var(--gold-text);--accent-bg:var(--gold-bg);">
+        <span class="actIcon">🃏</span>
+        <div class="actEyebrow">Social</div>
+        <span class="actBadge">Drop-in</span>
         <h4>Board Games &amp; Cards</h4>
         <p>Board games, card games and the occasional tournament — a fun, social way to practise English and pass an afternoon between classes.</p>
       </div>
@@ -245,88 +270,80 @@
 
 <div class="section">
   <div class="sectionHead">
-    <h2>From the activities calendar</h2>
-    <p>A look at the kinds of activities running every week across our campuses — real photos from real Lexis activities.</p>
+    <h2>Explore activities</h2>
+    <p>A look at the kinds of trips and sessions running every week across our campuses — real photos from real Lexis activities. Full dates and campuses are always in the calendar above.</p>
   </div>
-  <div class="blogGrid">
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/aa19e62b-55c6-42db-b58a-4074b88185f6.jpg" alt="Food tasting activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">Food Tasting</span>
-        <h3>A taste of everywhere</h3>
+  <div class="exploreGrid">
+    <div class="exploreCard" style="--accent:var(--orange);--accent-bg:var(--orange-bg);">
+      <div class="exploreCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/aa19e62b-55c6-42db-b58a-4074b88185f6.jpg" alt="Food tasting activity" loading="lazy"></div>
+      <div class="exploreCard-body">
+        <span class="actEyebrow">Food Tasting</span>
+        <h4>A taste of everywhere</h4>
         <p>From classic Aussie snacks to dishes brought along by classmates from every corner of the globe — come hungry, come curious, and expect plenty of conversation over good food.</p>
+        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
       </div>
     </div>
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/IMG_2067-e1779146019471.jpg" alt="BBQ and picnic activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">BBQ &amp; Picnic</span>
-        <h3>Sunday sausage sizzle</h3>
+    <div class="exploreCard" style="--accent:var(--gold-text);--accent-bg:var(--gold-bg);">
+      <div class="exploreCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/IMG_2067-e1779146019471.jpg" alt="BBQ and picnic activity" loading="lazy"></div>
+      <div class="exploreCard-body">
+        <span class="actEyebrow">BBQ &amp; Picnic</span>
+        <h4>Sunday sausage sizzle</h4>
         <p>Nothing beats a classic Aussie BBQ or a picnic in the sun with the whole school — good food, easy conversation, and one of the most relaxed ways to make friends outside class.</p>
+        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
       </div>
     </div>
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/PM4-scaled.jpg" alt="Cooking and baking activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">Cooking &amp; Baking</span>
-        <h3>Sushi, cookies &amp; pavlova</h3>
-        <p>Swap the textbook for an apron and get hands-on in the kitchen — a weekly favourite for practising everyday English while making something sweet with classmates from around the world.</p>
-      </div>
-    </div>
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/TP4-scaled.jpg" alt="Arts and crafts activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">Arts &amp; Crafts</span>
-        <h3>Paint, clay &amp; tote bags</h3>
-        <p>Pull up a chair for a relaxed, creative session — paint, beads or clay, and plenty of good conversation along the way. No artistic experience required.</p>
-      </div>
-    </div>
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/IMG_2195-scaled-e1779405340964.jpg" alt="Beach games activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">Beach Games</span>
-        <h3>Beach volleyball &amp; water pong</h3>
+    <div class="exploreCard" style="--accent:var(--teal-text);--accent-bg:var(--teal-bg);">
+      <div class="exploreCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/IMG_2195-scaled-e1779405340964.jpg" alt="Beach games activity" loading="lazy"></div>
+      <div class="exploreCard-body">
+        <span class="actEyebrow">Beach Games</span>
+        <h4>Beach volleyball &amp; water pong</h4>
         <p>Kick off your shoes and get amongst it in the sand and sun — one of the easiest ways to meet other students and burn off some energy after class.</p>
+        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
       </div>
     </div>
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/07/IMG_4957-scaled-e1783993467608.jpg" alt="Surfing activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">Surfing</span>
-        <h3>First wave, first win</h3>
+    <div class="exploreCard" style="--accent:var(--purple);--accent-bg:var(--purple-bg);">
+      <div class="exploreCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/07/IMG_4957-scaled-e1783993467608.jpg" alt="Surfing activity" loading="lazy"></div>
+      <div class="exploreCard-body">
+        <span class="actEyebrow">Surfing</span>
+        <h4>First wave, first win</h4>
         <p>Grab a board and hit the waves with an experienced local instructor. Whether it's your first time standing up or you're chasing your next wave, no experience necessary.</p>
+        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
       </div>
     </div>
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/07/IMG_5512-scaled-e1783993538656.jpg" alt="Wildlife encounter activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">Wildlife</span>
-        <h3>Meet the locals</h3>
+    <div class="exploreCard" style="--accent:var(--maroon);--accent-bg:var(--maroon-bg);">
+      <div class="exploreCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/07/IMG_5512-scaled-e1783993538656.jpg" alt="Wildlife encounter activity" loading="lazy"></div>
+      <div class="exploreCard-body">
+        <span class="actEyebrow">Wildlife</span>
+        <h4>Meet the locals</h4>
         <p>Get up close with some of Australia's most iconic native animals in a fun, hands-on session run by local wildlife educators.</p>
+        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
       </div>
     </div>
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/Luna-Park_5-e1778034457802.jpg" alt="Theme park attraction activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">Theme Park &amp; Attraction</span>
-        <h3>Luna Park &amp; mini golf nights</h3>
+    <div class="exploreCard" style="--accent:var(--orange);--accent-bg:var(--orange-bg);">
+      <div class="exploreCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/Luna-Park_5-e1778034457802.jpg" alt="Theme park attraction activity" loading="lazy"></div>
+      <div class="exploreCard-body">
+        <span class="actEyebrow">Theme Park &amp; Attraction</span>
+        <h4>Luna Park &amp; mini golf nights</h4>
         <p>A fun, high-energy outing to one of the local attractions — rides, games or a night out with classmates, and a great excuse to be a bit of a kid again.</p>
+        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
       </div>
     </div>
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/TTM3-scaled.jpg" alt="Movie night activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">Movie Night</span>
-        <h3>Popcorn &amp; practice</h3>
+    <div class="exploreCard" style="--accent:var(--gold-text);--accent-bg:var(--gold-bg);">
+      <div class="exploreCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/05/TTM3-scaled.jpg" alt="Movie night activity" loading="lazy"></div>
+      <div class="exploreCard-body">
+        <span class="actEyebrow">Movie Night</span>
+        <h4>Popcorn &amp; practice</h4>
         <p>A relaxed trip to the cinema — or a cosy movie night in the student lounge — and a nice, easy way to practise your listening skills while enjoying the latest release.</p>
+        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
       </div>
     </div>
-    <div class="blogCard">
-      <div class="blogCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/06/166fa880-76e7-438b-8945-855bf24ac6ac-432x768.jpg" alt="Team sport activity" loading="lazy"></div>
-      <div class="blogCard-body">
-        <span class="blogTag">Team Sport</span>
-        <h3>Footy, netball &amp; friendly rivalry</h3>
+    <div class="exploreCard" style="--accent:var(--teal-text);--accent-bg:var(--teal-bg);">
+      <div class="exploreCard-img"><img src="https://lexisenglish.com/wp-content/uploads/2026/06/166fa880-76e7-438b-8945-855bf24ac6ac-432x768.jpg" alt="Team sport activity" loading="lazy"></div>
+      <div class="exploreCard-body">
+        <span class="actEyebrow">Team Sport</span>
+        <h4>Footy, netball &amp; friendly rivalry</h4>
         <p>Get active with a friendly match or lesson — footy, netball, basketball and more, all at a level anyone can jump into.</p>
+        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
       </div>
     </div>
   </div>
