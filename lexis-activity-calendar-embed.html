@@ -22,6 +22,11 @@
   .sub{color:#e8d9c8;font-size:13px;}
   .staffToggle{border:1.5px solid #cabba8;background:transparent;color:#f3e9dc;padding:7px 14px;border-radius:999px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;}
   .staffToggle.on{background:var(--orange);border-color:var(--orange);color:#fff;}
+  .headerBtns{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .studentToggle{border:1.5px solid #cabba8;background:transparent;color:#f3e9dc;padding:7px 14px;border-radius:999px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .studentToggle.on{background:var(--going);border-color:var(--going);color:#fff;}
+  .loginPrompt{font-size:13.5px;color:var(--dark);line-height:1.55;margin-bottom:16px;}
+  .loginPrompt b{color:var(--maroon);}
 
   .blurbBar{background:#fff7ea;border-bottom:1px solid var(--line);padding:10px 24px;}
   .blurbBar-inner{max-width:1300px;margin:0 auto;font-size:13px;color:var(--dark);line-height:1.55;display:flex;gap:12px;align-items:flex-start;justify-content:space-between;}
@@ -92,12 +97,16 @@
   .monthHeadRow{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:6px;}
   .monthHeadRow div{text-align:center;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--maroon);letter-spacing:.5px;}
   .monthGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;}
-  .monthCell{background:var(--card);border:1px solid var(--line);border-radius:10px;min-height:108px;padding:6px 7px;display:flex;flex-direction:column;gap:4px;}
+  .monthCell{background:var(--card);border:1px solid var(--line);border-radius:10px;min-height:132px;padding:6px 7px;display:flex;flex-direction:column;gap:4px;}
   .monthCell.outside{background:#f7f1e8;opacity:.5;}
   .monthCell .cnum{font-size:12px;font-weight:800;color:var(--dark);}
   .chipRow{display:flex;flex-direction:column;gap:3px;overflow:hidden;flex:1;}
-  .actChip{font-size:10px;font-weight:700;color:#fff;padding:2px 6px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
-  .actChip.flagship{outline:1.5px solid var(--orange);}
+  .actChip{background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 5px;cursor:pointer;display:flex;flex-direction:column;gap:1px;}
+  .actChip:hover{border-color:var(--orange);}
+  .actChip .chipCampus{font-size:8px;font-weight:800;text-transform:uppercase;color:#fff;padding:1px 5px;border-radius:4px;display:inline-block;width:fit-content;white-space:nowrap;}
+  .actChip .chipTitle{font-size:10px;font-weight:700;color:var(--dark);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .actChip.flagship{border-color:var(--orange);background:linear-gradient(135deg,#fff 60%,var(--stripe));}
+  .actChip.attending{outline:1.5px solid var(--going);}
   .moreChip{font-size:10px;color:var(--grey);font-weight:700;cursor:pointer;}
 
   /* ---------- Modal ---------- */
@@ -178,7 +187,10 @@
       <h1>Activity Calendar</h1>
       <div class="sub">Sep 2026 – Apr 2027 · Weekly classroom activities + monthly flagship weekend trips, all six campuses</div>
     </div>
-    <button class="staffToggle" id="staffToggleBtn">🔒 Staff Sign In</button>
+    <div class="headerBtns">
+      <button class="studentToggle" id="studentToggleBtn">🎓 Student Log In</button>
+      <button class="staffToggle" id="staffToggleBtn">🔒 Staff Sign In</button>
+    </div>
   </div>
 </header>
 
@@ -237,6 +249,11 @@
 <!-- Staff Add/Edit form modal -->
 <div class="overlay" id="formOverlay">
   <div class="modal" id="formModal"></div>
+</div>
+
+<!-- Student log in / please-log-in prompt modal -->
+<div class="overlay" id="loginOverlay">
+  <div class="modal" id="loginModal"></div>
 </div>
 
 <!-- Print-only poster area -->
@@ -7781,6 +7798,7 @@ const ORIGINAL_HTML = document.documentElement.outerHTML;
 const BASELINE = JSON.parse(document.getElementById("calendar-data").textContent);
 const LS_DATA_KEY = "lexisCalendarData_v2";
 const LS_ATTEND_KEY = "lexisCalendarAttending_v2";
+const LS_STUDENT_KEY = "lexisCalendarStudent_v1";
 const STAFF_PIN = "LEXIS2026";
 function deepClone(obj){ return JSON.parse(JSON.stringify(obj)); }
 
@@ -7849,6 +7867,15 @@ let activeCampuses = CAMPUS_LOCKED ? new Set([LOCKED_CAMPUS]) : new Set(CAMPUSES
 let searchTerm = "";
 let myOnly = false;
 let staffMode = false;
+
+/* Student login (demo only — this is a self-contained offline file with no
+   real backend/auth. "Logged in" just means a name was entered and stored
+   in this browser's localStorage; it's a UX gate, not real authentication. */
+function loadStudent(){ try{ return JSON.parse(localStorage.getItem(LS_STUDENT_KEY)) || null; }catch(e){ return null; } }
+function saveStudent(rec){ localStorage.setItem(LS_STUDENT_KEY, JSON.stringify(rec)); }
+function clearStudent(){ localStorage.removeItem(LS_STUDENT_KEY); }
+let studentRec = loadStudent();
+let studentMode = !!studentRec;
 let editingId = null; // for staff form
 
 /* ============================================================
@@ -7963,7 +7990,11 @@ function miniCardHTML(a){
 function actChipHTML(a){
   const c = campusById[a.campus];
   const isFlag = a.type==="flagship";
-  return `<div class="actChip ${isFlag?'flagship':''}" style="background:${c.color}" data-open="${a.id}|${a.date}" title="${a.title}">${isFlag?"🎒 ":""}${a.title}</div>`;
+  const isOn = !!ATTENDING[a.id];
+  return `<div class="actChip ${isFlag?'flagship':''} ${isOn?'attending':''}" data-open="${a.id}|${a.date}" title="${a.title}">
+    <span class="chipCampus" style="background:${c.color}">${c.name}</span>
+    <div class="chipTitle">${isFlag?"🎒 ":""}${a.title}</div>
+  </div>`;
 }
 
 /* ============================================================
@@ -8240,7 +8271,7 @@ function openDetail(id, date){
     ${a.why?`<div class="desc"><span class="descLabel">Good to know</span>${a.why}</div>`:""}
     ${optsHTML?`<div class="options">${optsHTML}</div>`:""}
     <div class="footerRow">
-      <button class="attend-btn ${isOn?'on':''}" id="attendBtnInModal">${isOn?"✓ Attending":"Attend"}</button>
+      <button class="attend-btn ${isOn?'on':''}" id="attendBtnInModal">${isOn?"✓ Attending":((studentMode||staffMode)?"Attend":"🔒 Attend")}</button>
       <span style="font-size:12px;color:var(--grey);">${count} going</span>
       ${a.url?`<a class="book-link" href="${a.url}" target="_blank" rel="noopener">Book →</a>`:""}
       ${staffMode ? `<button class="editBtn" id="editBtnInModal" style="margin-left:auto;">✎ Edit</button><button class="delBtn" id="delBtnInModal">🗑 Delete</button>` : ""}
@@ -8249,6 +8280,7 @@ function openDetail(id, date){
     <div style="font-size:11px;color:#b8a892;margin-top:10px;">Tip: click outside this card, press the × above, or hit Esc to close without changing your Attend status.</div>
   `;
   document.getElementById("attendBtnInModal").onclick = ()=>{
+    if (!studentMode && !staffMode){ renderLoginRequiredPrompt(); return; }
     ATTENDING[a.id] = !ATTENDING[a.id]; saveAttending(); openDetail(id,date); renderCurrent();
   };
   if (staffMode){
@@ -8262,6 +8294,85 @@ function openDetail(id, date){
   }
   document.getElementById("detailOverlay").classList.add("show");
 }
+
+/* ============================================================
+   STUDENT LOG IN (demo — local browser only, not real auth)
+   ============================================================ */
+window.closeLogin = ()=> document.getElementById("loginOverlay").classList.remove("show");
+
+function renderLoginForm(){
+  const modal = document.getElementById("loginModal");
+  modal.innerHTML = `
+    <button class="closeX" onclick="closeLogin()">×</button>
+    <h2>🎓 Student Log In</h2>
+    <div class="loginPrompt">Enter your name so the calendar knows you're a current Lexis student and can save your RSVPs. This is a lightweight demo login stored only in this browser — no password required.</div>
+    <div class="formGrid">
+      <div class="full">
+        <label>Your name</label>
+        <input type="text" id="studentNameInput" placeholder="e.g. Maria Silva">
+      </div>
+      <div class="full">
+        <label>Campus (optional)</label>
+        <select id="studentCampusInput">
+          <option value="">— Select —</option>
+          ${CAMPUSES.map(c=>`<option value="${c.id}">${c.name}</option>`).join("")}
+        </select>
+      </div>
+    </div>
+    <div class="footerRow" style="border-top:none;padding-top:14px;">
+      <button class="saveBtn" id="studentLoginSaveBtn">Log in</button>
+      <button class="cancelBtn" onclick="closeLogin()">Cancel</button>
+    </div>
+  `;
+  document.getElementById("studentLoginSaveBtn").onclick = ()=>{
+    const name = document.getElementById("studentNameInput").value.trim();
+    if (!name){ alert("Please enter your name."); return; }
+    const campus = document.getElementById("studentCampusInput").value;
+    studentRec = { name, campus, since: new Date().toISOString() };
+    saveStudent(studentRec);
+    studentMode = true;
+    closeLogin();
+    updateStudentToggle();
+    renderCurrent();
+  };
+  document.getElementById("loginOverlay").classList.add("show");
+}
+
+function renderLoginRequiredPrompt(){
+  const modal = document.getElementById("loginModal");
+  modal.innerHTML = `
+    <button class="closeX" onclick="closeLogin()">×</button>
+    <h2>Please log in to confirm your attendance</h2>
+    <div class="loginPrompt">Only <b>current Lexis students</b> can RSVP to activities. If you're already studying with us, log in below — it takes a few seconds. Just browsing or thinking about studying with Lexis? You're welcome to explore every activity on the calendar without logging in.</div>
+    <div class="footerRow" style="border-top:none;padding-top:14px;">
+      <button class="saveBtn" id="promptLoginBtn">🎓 Student Log In</button>
+      <button class="cancelBtn" onclick="closeLogin()">Not now</button>
+    </div>
+  `;
+  document.getElementById("promptLoginBtn").onclick = renderLoginForm;
+  document.getElementById("loginOverlay").classList.add("show");
+}
+
+function updateStudentToggle(){
+  const btn = document.getElementById("studentToggleBtn");
+  if (studentMode && studentRec){
+    btn.textContent = "🎓 " + studentRec.name.split(" ")[0] + " (log out)";
+    btn.classList.add("on");
+  } else {
+    btn.textContent = "🎓 Student Log In";
+    btn.classList.remove("on");
+  }
+}
+document.getElementById("studentToggleBtn").onclick = ()=>{
+  if (studentMode){
+    if (confirm("Log out of student mode?")){
+      studentMode = false; studentRec = null; clearStudent(); updateStudentToggle(); renderCurrent();
+    }
+  } else {
+    renderLoginForm();
+  }
+};
+updateStudentToggle();
 
 /* ============================================================
    STAFF MODE
