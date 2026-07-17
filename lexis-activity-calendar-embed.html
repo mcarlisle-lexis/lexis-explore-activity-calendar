@@ -22,9 +22,6 @@
   .sub{color:#e8d9c8;font-size:13px;}
   .staffToggle{border:1.5px solid #cabba8;background:transparent;color:#f3e9dc;padding:7px 14px;border-radius:999px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;}
   .staffToggle.on{background:var(--orange);border-color:var(--orange);color:#fff;}
-  .headerBtns{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-  .studentToggle{border:1.5px solid #cabba8;background:transparent;color:#f3e9dc;padding:7px 14px;border-radius:999px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;}
-  .studentToggle.on{background:var(--going);border-color:var(--going);color:#fff;}
   .loginPrompt{font-size:13.5px;color:var(--dark);line-height:1.55;margin-bottom:16px;}
   .loginPrompt b{color:var(--maroon);}
 
@@ -188,10 +185,7 @@
       <h1>Activity Calendar</h1>
       <div class="sub">Sep 2026 – Apr 2027 · Weekly classroom activities + monthly flagship weekend trips, all six campuses</div>
     </div>
-    <div class="headerBtns">
-      <button class="studentToggle" id="studentToggleBtn">🎓 Student Log In</button>
-      <button class="staffToggle" id="staffToggleBtn">🔒 Staff Sign In</button>
-    </div>
+    <button class="staffToggle" id="staffToggleBtn">🔒 Staff Sign In</button>
   </div>
 </header>
 
@@ -8333,7 +8327,6 @@ function renderLoginForm(){
     saveStudent(studentRec);
     studentMode = true;
     closeLogin();
-    updateStudentToggle();
     renderCurrent();
   };
   document.getElementById("loginOverlay").classList.add("show");
@@ -8353,27 +8346,6 @@ function renderLoginRequiredPrompt(){
   document.getElementById("promptLoginBtn").onclick = renderLoginForm;
   document.getElementById("loginOverlay").classList.add("show");
 }
-
-function updateStudentToggle(){
-  const btn = document.getElementById("studentToggleBtn");
-  if (studentMode && studentRec){
-    btn.textContent = "🎓 " + studentRec.name.split(" ")[0] + " (log out)";
-    btn.classList.add("on");
-  } else {
-    btn.textContent = "🎓 Student Log In";
-    btn.classList.remove("on");
-  }
-}
-document.getElementById("studentToggleBtn").onclick = ()=>{
-  if (studentMode){
-    if (confirm("Log out of student mode?")){
-      studentMode = false; studentRec = null; clearStudent(); updateStudentToggle(); renderCurrent();
-    }
-  } else {
-    renderLoginForm();
-  }
-};
-updateStudentToggle();
 
 /* ============================================================
    STAFF MODE
@@ -8543,7 +8515,7 @@ function openPosterForm(){
   modal.innerHTML = `
     <button class="closeX" onclick="closeForm()">×</button>
     <h2>Upload Month Poster</h2>
-    <div style="font-size:12.5px;color:var(--grey);margin:6px 0 12px;">Upload the official PDF or image activity calendar poster for a campus and month — the same file staff already create each month. Students will see a View/Download link, and it's included in Print / Save PDF.</div>
+    <div style="font-size:12.5px;color:var(--grey);margin:6px 0 12px;">Upload the official PDF or image activity calendar poster for a campus and month — the same file staff already create each month. Students will see a View/Download link, and it's included in Print / Save PDF. Uploading a new file for a campus/month that already has one <b>replaces</b> it. Note: this saves to the browser you're using right now — use Export Updated Calendar (.html) and re-share that file for it to appear on other devices.</div>
     <div class="formGrid">
       <div><label>Campus</label><select id="p_campus">${CAMPUSES.map(c=>`<option value="${c.id}">${c.name}</option>`).join("")}</select></div>
       <div><label>Month</label><select id="p_month">${months.map(mo=>`<option value="${mo.value}">${mo.label}</option>`).join("")}</select></div>
