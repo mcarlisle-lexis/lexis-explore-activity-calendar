@@ -170,7 +170,7 @@
     <p>All six campuses, Sep 2026 – Apr 2027. Use the campus filter inside the tool to narrow it down.</p>
   </div>
   <div class="embedWrap">
-    <iframe class="embedFrame" src="lexis-activity-calendar-embed.html" title="Lexis English Activity Calendar" loading="lazy"></iframe>
+    <iframe class="embedFrame" id="activityFrame" src="lexis-activity-calendar-embed.html" title="Lexis English Activity Calendar" loading="lazy"></iframe>
   </div>
 </div>
 
@@ -188,7 +188,7 @@
         <span class="actBadge">60 min</span>
         <h4>Grammar Club</h4>
         <p>Extra, no-pressure grammar practice outside of class time. Bring specific questions you're stuck on, or just come along to review the basics with a teacher on hand.</p>
-        <a href="#activityCalendarSection" class="actLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="actLink" data-search="Grammar">See in calendar →</a>
       </div>
       <div class="actCard" style="--accent:var(--orange);--accent-bg:var(--orange-bg);">
         <span class="actIcon">📚</span>
@@ -196,7 +196,7 @@
         <span class="actBadge">60 min</span>
         <h4>Homework Help</h4>
         <p>A supervised drop-in session where you can bring any homework or coursework questions and get one-on-one support without waiting for your next class.</p>
-        <a href="#activityCalendarSection" class="actLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="actLink" data-search="Homework">See in calendar →</a>
       </div>
       <div class="actCard" style="--accent:var(--gold-text);--accent-bg:var(--gold-bg);">
         <span class="actIcon">🎧</span>
@@ -204,7 +204,7 @@
         <span class="actBadge">60 min</span>
         <h4>Listening Club</h4>
         <p>Sharpen your listening with real podcasts, songs and video clips, followed by group discussion — great for tuning your ear to different accents and speeds.</p>
-        <a href="#activityCalendarSection" class="actLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="actLink" data-search="Listening">See in calendar →</a>
       </div>
       <div class="actCard" style="--accent:var(--teal-text);--accent-bg:var(--teal-bg);">
         <span class="actIcon">🗣️</span>
@@ -212,7 +212,7 @@
         <span class="actBadge">60 min</span>
         <h4>Pronunciation Workshop</h4>
         <p>Focused, practical practice on sounds, word stress and intonation, aimed at helping you speak more clearly and be understood more easily.</p>
-        <a href="#activityCalendarSection" class="actLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="actLink" data-search="Pronunciation">See in calendar →</a>
       </div>
       <div class="actCard" style="--accent:var(--purple);--accent-bg:var(--purple-bg);">
         <span class="actIcon">📄</span>
@@ -220,7 +220,7 @@
         <span class="actBadge">60 min</span>
         <h4>Job Club &amp; Resume Workshop</h4>
         <p>Hands-on help polishing your resume and cover letter, practising interview answers, and understanding how job hunting actually works in Australia.</p>
-        <a href="#activityCalendarSection" class="actLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="actLink" data-search="Job">See in calendar →</a>
       </div>
     </div>
   </div>
@@ -238,7 +238,7 @@
         <span class="actEyebrow">Kayaking</span>
         <h4>Paddle the coastline</h4>
         <p>Grab a paddle and get out on the water with an instructor on hand — no experience needed. A relaxed way to explore the local coastline and get some fresh air between classes.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Kayaking">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--purple);--accent-bg:var(--purple-bg);">
@@ -247,7 +247,7 @@
         <span class="actEyebrow">Stand Up Paddle Board</span>
         <h4>Find your balance</h4>
         <p>Give stand-up paddleboarding a go on calm, sheltered water — wobbly at first, worth it for the view. Boards and basic instruction provided, all levels welcome.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Paddle">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--orange);--accent-bg:var(--orange-bg);">
@@ -256,7 +256,7 @@
         <span class="actEyebrow">Aussie Food Day</span>
         <h4>A taste of Australia</h4>
         <p>Sample classic Aussie snacks and dishes — think Tim Tams, meat pies and a few surprises — put together to give you a taste of local culture and plenty to talk about.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Aussie Food">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--gold-text);--accent-bg:var(--gold-bg);">
@@ -265,7 +265,7 @@
         <span class="actEyebrow">International Lunch</span>
         <h4>Bring a dish, share a table</h4>
         <p>Students bring a dish from home to share with the whole school — one of the best ways to try food from every corner of the globe and swap stories over a shared table.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="International Lunch">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--maroon);--accent-bg:var(--maroon-bg);">
@@ -274,7 +274,7 @@
         <span class="actEyebrow">Surf Lesson</span>
         <h4>First wave, first win</h4>
         <p>Grab a board and hit the waves with an experienced local instructor. Whether it's your first time standing up or you're chasing your next wave, no experience necessary.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Surf Lesson">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--teal-text);--accent-bg:var(--teal-bg);">
@@ -283,7 +283,7 @@
         <span class="actEyebrow">End of Term Sausage Sizzle</span>
         <h4>Sausage sizzle send-off</h4>
         <p>A classic Aussie BBQ to wrap up the term — good food, easy conversation, and a relaxed way to celebrate with the whole school before the break.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Sausage">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--gold-text);--accent-bg:var(--gold-bg);">
@@ -292,7 +292,7 @@
         <span class="actEyebrow">Walk &amp; Talk</span>
         <h4>Explore on foot</h4>
         <p>A guided walk around the local area while you practise speaking naturally on the move. Fresh air, easy conversation, and a good way to get to know your new home.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Walk &amp; Talk">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--teal-text);--accent-bg:var(--teal-bg);">
@@ -301,7 +301,7 @@
         <span class="actEyebrow">Coffee &amp; Conversation</span>
         <h4>Grab a coffee, join the chat</h4>
         <p>Relaxed, small-group conversation over a coffee — no set topic, no pressure to be perfect. Chat with classmates from other classes and levels, or use the time to practise speaking up in a supportive, low-key setting.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Coffee &amp; Conversation">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--maroon);--accent-bg:var(--maroon-bg);">
@@ -310,7 +310,7 @@
         <span class="actEyebrow">Yoga &amp; Pilates</span>
         <h4>Slow it down</h4>
         <p>A relaxed session focused on movement, breathing and a bit of headspace — a nice counterbalance to study (and to some of the calendar's more energetic activities).</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Yoga">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--orange);--accent-bg:var(--orange-bg);">
@@ -319,7 +319,7 @@
         <span class="actEyebrow">Games &amp; Social Lounge</span>
         <h4>Unwind with the crew</h4>
         <p>A laid-back afternoon in the student lounge with games and easy conversation. No pressure, no plans — just a good way to unwind and get to know your classmates.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Lounge">See in calendar →</a>
       </div>
     </div>
     <div class="exploreCard" style="--accent:var(--gold-text);--accent-bg:var(--gold-bg);">
@@ -328,7 +328,7 @@
         <span class="actEyebrow">Board Games &amp; Cards</span>
         <h4>Game night, every week</h4>
         <p>Board games, card games and the occasional tournament — a fun, social way to practise English and pass an afternoon between classes.</p>
-        <a href="#activityCalendarSection" class="exploreLink">See in calendar →</a>
+        <a href="#activityCalendarSection" class="exploreLink" data-search="Board Games">See in calendar →</a>
       </div>
     </div>
   </div>
@@ -418,6 +418,23 @@
     <span>Activity Calendar tool: Lexis English · Travel Discovery Series</span>
   </div>
 </footer>
+
+<script>
+  // "See in calendar" links carry a data-search term. Clicking one reloads the
+  // embedded calendar iframe pre-filtered (and, for one-off activities, jumped
+  // to the right month) to that specific activity, then scrolls it into view.
+  (function(){
+    var frame = document.getElementById('activityFrame');
+    var baseSrc = 'lexis-activity-calendar-embed.html';
+    document.querySelectorAll('a[data-search]').forEach(function(link){
+      link.addEventListener('click', function(){
+        if (!frame) return;
+        var term = link.getAttribute('data-search');
+        frame.src = baseSrc + '?q=' + encodeURIComponent(term);
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>

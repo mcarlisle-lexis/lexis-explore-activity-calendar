@@ -7857,9 +7857,13 @@ let currentMonthFirst = new Date(Date.UTC(2026,8,1)); // Sep 2026
 const URL_PARAMS = new URLSearchParams(location.search);
 const LOCKED_CAMPUS = URL_PARAMS.get("campus");
 const CAMPUS_LOCKED = !!(LOCKED_CAMPUS && campusById[LOCKED_CAMPUS]);
+/* Deep-link support: <iframe src="calendar.html?q=Kayaking"> pre-fills the search
+   box with that term and, if it matches a dated (one-off) activity, jumps the
+   view to the month/week it actually falls in so it's visible right away. */
+const INITIAL_SEARCH = (URL_PARAMS.get("q") || "").trim();
 
 let activeCampuses = CAMPUS_LOCKED ? new Set([LOCKED_CAMPUS]) : new Set(CAMPUSES.map(c=>c.id));
-let searchTerm = "";
+let searchTerm = INITIAL_SEARCH.toLowerCase();
 let myOnly = false;
 let staffMode = false;
 
@@ -8611,6 +8615,28 @@ document.getElementById("printMonthBtn").onclick = ()=>{
    ============================================================ */
 function renderCurrent(){ renderBlurb(); viewMode==="week" ? renderWeek() : renderMonth(); }
 function render(){ renderCurrent(); }
+
+if (INITIAL_SEARCH){
+  document.getElementById("search").value = INITIAL_SEARCH;
+  const term = INITIAL_SEARCH.toLowerCase();
+  const dateMatches = DATA.dated
+    .filter(x=>{
+      const hay = (x.title+" "+(x.location||"")+" "+(campusById[x.campus]?campusById[x.campus].name:"")).toLowerCase();
+      return hay.includes(term);
+    })
+    .sort((a,b)=> a.date.localeCompare(b.date));
+  if (dateMatches.length){
+    const today = new Date();
+    const todayISO = today.toISOString().slice(0,10);
+    // Prefer the next upcoming occurrence; fall back to the most recent past one.
+    const upcoming = dateMatches.find(x=> x.date >= todayISO) || dateMatches[dateMatches.length-1];
+    const d = parseISO(upcoming.date);
+    viewMode = "month";
+    monthViewBtn.classList.add("active");
+    weekViewBtn.classList.remove("active");
+    currentMonthFirst = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
+  }
+}
 
 render();
 </script>
